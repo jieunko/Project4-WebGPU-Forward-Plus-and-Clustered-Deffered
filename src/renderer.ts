@@ -131,6 +131,7 @@ export abstract class Renderer {
         if (this.prevTime == 0) {
             this.prevTime = time;
         }
+        
 
         let deltaTime = time - this.prevTime;
         this.camera.onFrame(deltaTime);

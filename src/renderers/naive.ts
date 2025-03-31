@@ -22,7 +22,7 @@ export class NaiveRenderer extends renderer.Renderer {
                 { // uniform
                     binding: 0,
                     visibility: GPUShaderStage.VERTEX,
-                    buffer: { type: "read-only-storage" }
+                    buffer: { type: "uniform" }
                 },
                 { // lightSet
                     binding: 1,
