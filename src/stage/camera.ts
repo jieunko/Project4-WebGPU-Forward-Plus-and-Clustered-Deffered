@@ -1,4 +1,4 @@
-import { Mat4, mat4, Vec3, vec3 } from "wgpu-matrix";
+import { Mat4, mat4, Vec3, vec3, vec2 } from "wgpu-matrix";
 import { toRadians } from "../math_util";
 import { device, canvas, fovYDegrees, aspectRatio } from "../renderer";
 
@@ -14,6 +14,15 @@ class CameraUniforms {
     // TODO-2: add extra functions to set values needed for light clustering here
     set viewMat(mat: Float32Array) {
         this.floatView.set(mat.subarray(0, 16), 16);
+    }
+    set invProjMat(mat: Float32Array) {
+        this.floatView.set(mat.subarray(0, 16), 32);
+    }
+    set invViewMat(mat: Float32Array) {
+        this.floatView.set(mat.subarray(0, 16), 48);
+    }
+    set screenDimensions(dim: Float32Array) {
+        this.floatView.set(dim.subarray(0, 2), 64);
     }
 }
 
@@ -144,6 +153,9 @@ export class Camera {
         this.uniforms.viewMat = viewMat;
 
         // TODO-2: write to extra buffers needed for light clustering here
+        this.uniforms.invProjMat = mat4.inverse(this.projMat);
+        this.uniforms.invViewMat = mat4.inverse(viewMat);
+        this.uniforms.screenDimensions = vec2.fromValues(canvas.width, canvas.height);
 
         // TODO-1.1: upload `this.uniforms.buffer` (host side) to `this.uniformsBuffer` (device side)
         // check `lights.ts` for examples of using `device.queue.writeBuffer()`
