@@ -59,7 +59,7 @@ In this project, you are given code for:
 - glTF scene loading
 - Camera control
 - Light movement compute shader
-- Naive forward renderer
+- Naive forward renderer 
 - Skeleton code for Forward+ and Clustered Deferred renderers
 - Helpers
 
