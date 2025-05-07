@@ -1,34 +1,34 @@
-name: Build
+name: Deploy to GitHub Pages
+
 on:
-  pull_request:
-    branches:
-      - main
   push:
     branches:
-      - nextjs # Testing the workflow on this branch.
+      - main  # Replace with your default branch if not 'main'
+
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
-    env:
-      BASE_PATH: /webgpu-samples
+
     steps:
-      - name: Checkout 🛎️
-        uses: actions/checkout@v4
-        with:
-          persist-credentials: false
+      # Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      - uses: actions/setup-node@v4
+      # Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
         with:
-          node-version: "20.x"
+          node-version: '16' # Use the Node.js version required by your project
 
-      - uses: actions/cache@v4
-        with:
-          path: ${{ github.workspace }}/.next/cache
-          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}
-
-      - name: Install and Build 🔧
+      # Install dependencies and build the project
+      - name: Install dependencies and build
         run: |
-          export REPOSITORY_NAME=${{ github.repository }}
-          npm ci
-          npm run-script lint
-          npm run-script build
+          npm install
+          npm run build # Replace with your build command if different
+
+      # Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist # Replace with your build output directory
